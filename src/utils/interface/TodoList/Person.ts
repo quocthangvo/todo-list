@@ -3,5 +3,5 @@ export type IPerson = {
   Name: string;
   Age: number;
   Address: string;
-  ImageID: string;
+  Status: string;
 };

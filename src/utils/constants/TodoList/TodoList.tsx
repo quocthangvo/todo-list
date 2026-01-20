@@ -1,28 +1,23 @@
-import type { IPerson } from "../../interface/TodoList/Person";
-
 export const TODOLIST_TABLE = [
   {
     name: "ID",
     state: "ID",
   },
   {
-    name: "NAME",
+    name: "Name",
     state: "Name",
   },
   {
-    name: "AGE",
+    name: "Age",
     state: "Age",
   },
   {
-    name: "ADDRESS",
+    name: "Address",
     state: "Address",
   },
   {
-    name: "IMAGE",
-    state: "ImageID",
+    name: "Status",
+    state: "Status",
   },
+  { name: "Action" },
 ];
-
-export function getImageUrl(person: IPerson) {
-  return "https://i.imgur.com/" + person.ImageID + "s.jpg";
-}
