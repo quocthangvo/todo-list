@@ -8,8 +8,12 @@ export const TODOLIST_TABLE = [
     state: "Name",
   },
   {
-    name: "Age",
-    state: "Age",
+    name: "Card ID",
+    state: "Card_ID",
+  },
+  {
+    name: "Birthday",
+    state: "Birthday",
   },
   {
     name: "Address",

@@ -1,7 +1,8 @@
 export type IPerson = {
   ID: number;
   Name: string;
-  Age: number;
+  Card_ID: number;
+  Birthday: string;
   Address: string;
   Status: string;
 };
