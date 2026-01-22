@@ -12,13 +12,12 @@ import TodoListSearch from "../components/TodoList/TodoListSearch";
 
 const TodoList = () => {
   const [todoList, setTodoList] = useState<IPerson[]>(people);
-  const [dropdown, setDropdown] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  type ModalMode = "add" | "edit";
-  const [mode, setMode] = useState<ModalMode>("add");
-
   const [selectedItem, setSelectedItem] = useState<IPerson | null>(null);
+
+  const [dropdown, setDropdown] = useState(false);
+  const [modal, setModal] = useState(false);
+
+  const [mode, setMode] = useState<string | null>(null);
 
   const [search, setSearch] = useState("");
 
@@ -39,7 +38,7 @@ const TodoList = () => {
   const addItem = () => {
     setMode("add");
     setSelectedItem(null);
-    setOpen(true);
+    setModal(true);
   };
 
   const deleteItem = async (data: IPerson) => {
@@ -73,7 +72,7 @@ const TodoList = () => {
   const editItem = (data: IPerson) => {
     setMode("edit");
     setSelectedItem(data);
-    setOpen(true);
+    setModal(true);
   };
   // ACTION
 
@@ -95,8 +94,8 @@ const TodoList = () => {
         />
 
         <TodoListForm
-          open={open}
-          onClose={() => setOpen(false)}
+          modal={modal}
+          setModal={setModal}
           data={todoList}
           setData={setTodoList}
           mode={mode}

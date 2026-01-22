@@ -1,21 +1,15 @@
-import { IoMdClose } from "react-icons/io";
-import type { IPerson } from "../../utils/interface/TodoList/Person";
-import { toast } from "react-toastify";
-import { ErrorMessage, useFormik } from "formik";
 import { useEffect } from "react";
+import { useFormik } from "formik";
+import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import type { IPerson } from "../../utils/interface/TodoList/Person";
+import type { TodoListFormProps } from "../../utils/props/TodoList/TodoList";
+
 import * as Yup from "yup";
-type TodoListFormProps = {
-  open: boolean;
-  onClose: () => void;
-  data: IPerson[];
-  setData: React.Dispatch<React.SetStateAction<IPerson[]>>;
-  mode: string;
-  selectedItem: IPerson | null;
-};
 
 const TodoListForm = ({
-  open,
-  onClose,
+  modal,
+  setModal,
   data,
   setData,
   mode,
@@ -25,24 +19,23 @@ const TodoListForm = ({
     if (data.length === 0) return 1;
     return Math.max(...data.map((item) => item.ID)) + 1;
   };
-
-  // ACTION
   const validationSchema = Yup.object({
     Name: Yup.string().required("Name is required"),
     Card_ID: Yup.number().required("Card ID is required"),
     Birthday: Yup.string().required("Birthday is required"),
     Status: Yup.string().required("Status is required"),
   });
-
+  // ACTION
   const formik = useFormik({
     initialValues: {
-      ID: 0,
       Name: "",
       Card_ID: 0,
       Birthday: "",
       Address: "",
       Status: "",
+      ...(mode === "edit" && selectedItem ? selectedItem : {}),
     },
+    enableReinitialize: true,
     validationSchema,
     onSubmit: (values, { resetForm }) => {
       if (mode === "add") {
@@ -60,8 +53,8 @@ const TodoListForm = ({
       } else {
         setData((prev) =>
           prev.map((item) =>
-            item.ID === values.ID ? { ...item, ...values } : item
-          )
+            item.ID === values.ID ? { ...item, ...values } : item,
+          ),
         );
 
         toast.success("Edit Successfully!", {
@@ -71,21 +64,20 @@ const TodoListForm = ({
         });
       }
       resetForm();
-      onClose();
+      setModal((prev: any) => !prev);
     },
   });
 
-  //fill data vào input
   useEffect(() => {
-    if (mode === "edit" && selectedItem) {
-      formik.setValues(selectedItem);
+    if (!modal) {
+      formik.resetForm();
     }
-  }, [mode, selectedItem]);
+  }, [modal]);
 
   // ACTION
   return (
     <div>
-      {open && (
+      {modal && (
         <div className="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black/50 backdrop-blur-xs">
           <div className="relative p-4 w-full max-w-2xl max-h-full">
             <form onSubmit={formik.handleSubmit}>
@@ -98,7 +90,7 @@ const TodoListForm = ({
                     type="button"
                     className="text-neutral-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-lg w-8 h-8  flex justify-center items-center cursor-pointer"
                     data-modal-hide="default-modal"
-                    onClick={onClose}
+                    onClick={() => setModal(!modal)}
                   >
                     <IoMdClose />
                   </button>
@@ -112,7 +104,6 @@ const TodoListForm = ({
                       name="Name"
                       value={formik.values.Name}
                       onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
                       className="rounded-sm p-2  border border-gray-300 text-gray-900 w-full focus:outline-none focus:border-blue-500 "
                     />
                     {formik.touched.Name && formik.errors.Name && (
@@ -196,7 +187,7 @@ const TodoListForm = ({
                   <button
                     type="button"
                     className="py-2.5 px-5 ms-3 text-sm font-medium rounded-lg border border-gray-300 hover:border-gray-400 cursor-pointer"
-                    onClick={onClose}
+                    onClick={() => setModal(!modal)}
                   >
                     Cancel
                   </button>

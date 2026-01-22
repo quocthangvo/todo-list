@@ -1,8 +1,5 @@
 import { MdAdd } from "react-icons/md";
-
-type TodoListSearchProps = {
-  onAdd: () => void;
-};
+import type { TodoListSearchProps } from "../../utils/props/TodoList/TodoList";
 
 const TodoListSearch = ({ onAdd }: TodoListSearchProps) => {
   return (
