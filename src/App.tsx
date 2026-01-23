@@ -3,12 +3,14 @@ import React from "react";
 import "./App.css";
 import TodoList from "./pages/TodoList";
 import { ToastContainer } from "react-toastify";
+import SideBar from "./pages/SideBar";
 
 function App() {
   return (
     <React.Fragment>
       <ToastContainer />
-      <TodoList />
+      <SideBar />
+      {/* <TodoList /> */}
     </React.Fragment>
   );
 }

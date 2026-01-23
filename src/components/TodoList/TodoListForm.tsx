@@ -53,8 +53,8 @@ const TodoListForm = ({
       } else {
         setData((prev) =>
           prev.map((item) =>
-            item.ID === values.ID ? { ...item, ...values } : item,
-          ),
+            item.ID === values.ID ? { ...item, ...values } : item
+          )
         );
 
         toast.success("Edit Successfully!", {

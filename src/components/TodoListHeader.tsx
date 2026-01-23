@@ -2,13 +2,7 @@ import { BsSearch } from "react-icons/bs";
 import { CiLogout } from "react-icons/ci";
 import { IoMdSettings } from "react-icons/io";
 import { MdAccountCircle, MdManageAccounts } from "react-icons/md";
-
-type TodoListHeaderProps = {
-  dropdown: boolean;
-  setDropdown: React.Dispatch<React.SetStateAction<boolean>>;
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-};
+import type { TodoListHeaderProps } from "../utils/props/TodoList/TodoList";
 
 const TodoListHeader = ({
   dropdown,

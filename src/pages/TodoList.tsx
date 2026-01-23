@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { people } from "../data/TodoList/TodoListData";
 import type { IPerson } from "../utils/interface/TodoList/Person";
@@ -11,28 +11,20 @@ import TodoListHeader from "../components/TodoListHeader";
 import TodoListSearch from "../components/TodoList/TodoListSearch";
 
 const TodoList = () => {
-  const [todoList, setTodoList] = useState<IPerson[]>(people);
+  const [todoList, setTodoList] = useState<IPerson[]>(() => {
+    const saved = localStorage.getItem("todoList");
+    return saved ? JSON.parse(saved) : people;
+  });
   const [selectedItem, setSelectedItem] = useState<IPerson | null>(null);
 
   const [dropdown, setDropdown] = useState(false);
   const [modal, setModal] = useState(false);
 
   const [mode, setMode] = useState<string | null>(null);
-
   const [search, setSearch] = useState("");
 
-  // FETCH
-  const filteredList = todoList.filter((item) => {
-    const keyword = search.toLowerCase();
-    const search_item =
-      item.Name.toLowerCase().includes(keyword) ||
-      item.Address.toLowerCase().includes(keyword) ||
-      item.Status.toLowerCase().includes(keyword) ||
-      item.Card_ID.toString().includes(keyword);
-
-    return search_item;
-  });
-  // FETCH
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
 
   // ACTION
   const addItem = () => {
@@ -54,13 +46,17 @@ const TodoList = () => {
 
     if (!result.isConfirmed) return;
 
-    const indexDelete = todoList.indexOf(data);
-    if (indexDelete === -1) return;
+    setTodoList((prev) => {
+      const newList = prev.filter((item) => item.ID !== data.ID);
 
-    const tempList = [...todoList];
+      const newTotalPages = Math.ceil(newList.length / pageSize);
 
-    tempList.splice(indexDelete, 1);
-    setTodoList(tempList);
+      if (currentPage > newTotalPages) {
+        setCurrentPage(1);
+      }
+
+      return newList;
+    });
 
     toast.success("Delete Successfully!", {
       position: "top-right",
@@ -76,6 +72,21 @@ const TodoList = () => {
   };
   // ACTION
 
+  // FETCH
+  const filteredList = todoList.filter((item) => {
+    const keyword = search.toLowerCase();
+    const search_item =
+      item.Name.toLowerCase().includes(keyword) ||
+      item.Address.toLowerCase().includes(keyword) ||
+      item.Status.toLowerCase().includes(keyword) ||
+      item.Card_ID.toString().includes(keyword);
+
+    return search_item;
+  });
+  useEffect(() => {
+    localStorage.setItem("todoList", JSON.stringify(todoList));
+  });
+  // FETCH
   return (
     <React.Fragment>
       <TodoListHeader
@@ -91,6 +102,10 @@ const TodoList = () => {
           data={filteredList}
           onDelete={deleteItem}
           onEdit={editItem}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          setCurrentPage={setCurrentPage}
         />
 
         <TodoListForm

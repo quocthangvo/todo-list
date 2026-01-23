@@ -5,23 +5,29 @@ import { AiOutlineEdit } from "react-icons/ai";
 
 import type { TodoListTableProps } from "../../utils/props/TodoList/TodoList";
 import TodoListTablePagination from "./TodoListTable/TodoListTablePagination";
-import { useState } from "react";
 
-const TodoListTable = ({ data, onDelete, onEdit }: TodoListTableProps) => {
+const TodoListTable = ({
+  data,
+  onDelete,
+  onEdit,
+  pageSize,
+  currentPage,
+  setPageSize,
+  setCurrentPage,
+}: TodoListTableProps) => {
   const statusClass: { [key: string]: string } = {
     Done: "text-green-600 font-bold",
     Pending: "text-yellow-600 font-bold",
     Canceled: "text-red-600 font-bold",
   };
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = data.slice(startIndex, startIndex + pageSize);
+
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 ">
-      <table className="w-full text-left">
-        <thead className="bg-[#0575f3] text-white">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 border border-gray-300">
+      <table className="w-full text-left ">
+        <thead className="bg-gray-100 text-black">
           <tr>
             {TODOLIST_TABLE.map((item, index) => (
               <th key={index} className="px-6 py-4 ">
@@ -45,7 +51,7 @@ const TodoListTable = ({ data, onDelete, onEdit }: TodoListTableProps) => {
               <tr
                 key={index}
                 className={`border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 ${
-                  index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
                 }`}
               >
                 <td className="px-6 py-3">{item.ID}</td>

@@ -1,4 +1,3 @@
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
 type TodoListTablePaginationProps = {
