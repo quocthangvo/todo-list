@@ -22,6 +22,7 @@
     "react-toastify": "^11.0.5",
     "sweetalert2": "^11.26.17",
     "tailwindcss": "^4.1.18",
+    "use-local-storage": "^3.0.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {

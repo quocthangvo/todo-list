@@ -5,16 +5,17 @@ import type { IPerson } from "../utils/interface/TodoList/Person";
 
 import TodoListTable from "../components/TodoList/TodoListTable";
 import TodoListForm from "../components/TodoList/TodoListForm";
-
-import Swal from "sweetalert2";
 import TodoListHeader from "../components/TodoListHeader";
 import TodoListSearch from "../components/TodoList/TodoListSearch";
 
+import Swal from "sweetalert2";
+import useLocalStorage from "use-local-storage";
+
 const TodoList = () => {
-  const [todoList, setTodoList] = useState<IPerson[]>(() => {
-    const saved = localStorage.getItem("todoList");
-    return saved ? JSON.parse(saved) : people;
-  });
+  const [todoList, setTodoList] = useLocalStorage<IPerson[]>(
+    "todoList",
+    people,
+  );
   const [selectedItem, setSelectedItem] = useState<IPerson | null>(null);
 
   const [dropdown, setDropdown] = useState(false);
@@ -46,7 +47,7 @@ const TodoList = () => {
 
     if (!result.isConfirmed) return;
 
-    setTodoList((prev) => {
+    setTodoList((prev = []) => {
       const newList = prev.filter((item) => item.ID !== data.ID);
 
       const newTotalPages = Math.ceil(newList.length / pageSize);
@@ -83,9 +84,7 @@ const TodoList = () => {
 
     return search_item;
   });
-  useEffect(() => {
-    localStorage.setItem("todoList", JSON.stringify(todoList));
-  });
+
   // FETCH
   return (
     <React.Fragment>

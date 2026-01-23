@@ -3,7 +3,7 @@ import React from "react";
 import "./App.css";
 import TodoList from "./pages/TodoList";
 import { ToastContainer } from "react-toastify";
-import SideBar from "./pages/SideBar";
+import SideBar from "./layouts/SideBar";
 
 function App() {
   return (
