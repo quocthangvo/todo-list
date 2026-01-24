@@ -10,11 +10,12 @@ import TodoListSearch from "../components/TodoList/TodoListSearch";
 
 import Swal from "sweetalert2";
 import useLocalStorage from "use-local-storage";
+import BreadCrumb from "../components/TodoList/BreadCrumb";
 
 const TodoList = () => {
   const [todoList, setTodoList] = useLocalStorage<IPerson[]>(
     "todoList",
-    people,
+    people
   );
   const [selectedItem, setSelectedItem] = useState<IPerson | null>(null);
 
@@ -95,6 +96,7 @@ const TodoList = () => {
         setSearch={setSearch}
       />
       <div className="max-w-[1280px] items-center mx-auto p-4">
+        <BreadCrumb />
         <TodoListSearch onAdd={addItem} />
 
         <TodoListTable

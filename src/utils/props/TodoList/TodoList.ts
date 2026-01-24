@@ -25,7 +25,7 @@ export type TodoListFormProps = {
   modal: boolean;
   setModal: (item: boolean | any) => void;
   data: IPerson[];
-  setData: (data: IPerson[]) => void;
+  setData: (data: IPerson[] | any) => void;
   mode: string | any;
   selectedItem: IPerson | null;
 };

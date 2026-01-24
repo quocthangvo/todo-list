@@ -43,7 +43,7 @@ const TodoListForm = ({
           ...values,
           ID: getNextId(),
         };
-        setData((prev) => [...prev, newItem]);
+        setData((prev: any) => [...prev, newItem]);
 
         toast.success("Add Successfully!", {
           position: "top-right",
@@ -51,8 +51,8 @@ const TodoListForm = ({
           theme: "light",
         });
       } else {
-        setData((prev) =>
-          prev.map((item) =>
+        setData((prev: any) =>
+          prev.map((item: any) =>
             item.ID === values.ID ? { ...item, ...values } : item
           )
         );
