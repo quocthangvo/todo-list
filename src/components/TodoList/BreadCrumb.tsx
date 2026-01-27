@@ -1,7 +1,7 @@
 import { MdNavigateNext } from "react-icons/md";
 import { TiHome } from "react-icons/ti";
 import { Link, useLocation } from "react-router-dom";
-import { appRouters } from "../../routers/Routers";
+import { breadCrumbRouters } from "../../routers/BreadCrumbRouters";
 
 const BreadCrumb = () => {
   const location = useLocation();
@@ -21,19 +21,14 @@ const BreadCrumb = () => {
           </li>
           {paths.map((_, i) => {
             const url = "/" + paths.slice(0, i + 1).join("/");
-
-            const match = appRouters.find((r) =>
-              url.match(new RegExp("^" + r.path.replace(":id", "[^/]+") + "$"))
+            const match = breadCrumbRouters.find((r) =>
+              url.match(new RegExp("^" + r.path.replace(":id", "[^/]+")))
             );
 
             return (
-              <li className="flex items-center">
+              <li key={url} className="flex items-center">
                 <MdNavigateNext />
-                <span
-                  key={url}
-                  className="ms-1 text-sm font-medium text-gray-400"
-                >
-                  {i !== 0 && " / "}
+                <span className="ms-1 text-sm font-medium text-gray-400">
                   {match?.breadcrumb || url}
                 </span>
               </li>

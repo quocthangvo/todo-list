@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { people } from "../data/TodoList/TodoListData";
 import type { IPerson } from "../utils/interface/TodoList/Person";
@@ -19,7 +19,6 @@ const TodoList = () => {
   );
   const [selectedItem, setSelectedItem] = useState<IPerson | null>(null);
 
-  const [dropdown, setDropdown] = useState(false);
   const [modal, setModal] = useState(false);
 
   const [mode, setMode] = useState<string | null>(null);
@@ -89,15 +88,15 @@ const TodoList = () => {
   // FETCH
   return (
     <React.Fragment>
-      <TodoListHeader
+      {/* <TodoListHeader
         dropdown={dropdown}
         setDropdown={setDropdown}
         search={search}
         setSearch={setSearch}
-      />
+      /> */}
       <div className="max-w-[1280px] items-center mx-auto p-4">
         <BreadCrumb />
-        <TodoListSearch onAdd={addItem} />
+        <TodoListSearch onAdd={addItem} search={search} setSearch={setSearch} />
 
         <TodoListTable
           data={filteredList}

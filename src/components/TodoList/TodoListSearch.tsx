@@ -1,7 +1,7 @@
 import { MdAdd } from "react-icons/md";
 import type { TodoListSearchProps } from "../../utils/props/TodoList/TodoList";
 
-const TodoListSearch = ({ onAdd }: TodoListSearchProps) => {
+const TodoListSearch = ({ onAdd, search, setSearch }: TodoListSearchProps) => {
   return (
     // <div className="grid grid-cols-6 gap-4">
     //   <div className="grid grid-cols-subgrid">
@@ -42,6 +42,16 @@ const TodoListSearch = ({ onAdd }: TodoListSearchProps) => {
     //   </div>
     // </div>
     <div className="flex gap-2 items-end">
+      <div className="grid grid-cols-subgrid">
+        <p className="">Search</p>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Enter..."
+          className="border rounded-lg p-2  border-gray-300"
+        />
+      </div>
       <div className="flex gap-2">
         <button
           onClick={() => {

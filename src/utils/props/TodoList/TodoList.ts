@@ -9,6 +9,8 @@ export type TodoListHeaderProps = {
 
 export type TodoListSearchProps = {
   onAdd: () => void;
+  search: string;
+  setSearch: (data: string) => void;
 };
 
 export type TodoListTableProps = {

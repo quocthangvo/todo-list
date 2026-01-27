@@ -1,0 +1,17 @@
+import React from "react";
+import Card from "../../components/common/Card";
+import BreadCrumb from "../../components/TodoList/BreadCrumb";
+
+const Products = () => {
+  return (
+    <React.Fragment>
+      <Card>
+        <div className="max-w-[1280px] items-center mx-auto p-4">
+          <BreadCrumb />
+        </div>
+      </Card>
+    </React.Fragment>
+  );
+};
+
+export default Products;

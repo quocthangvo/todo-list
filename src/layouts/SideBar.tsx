@@ -2,17 +2,20 @@ import { PiSidebarSimpleDuotone } from "react-icons/pi";
 
 import { BiLogoTailwindCss, BiSolidDashboard } from "react-icons/bi";
 import { useState } from "react";
-import { RiArrowDropDownLine, RiDashboard2Fill } from "react-icons/ri";
+import { RiDashboard2Fill } from "react-icons/ri";
 import { FaCircle, FaShoppingCart, FaUserFriends } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import { FaBagShopping } from "react-icons/fa6";
 import { MdArrowDropUp, MdOutlineArrowDropDown } from "react-icons/md";
-import { BrowserRouter, Routes, Route, Link, Router } from "react-router-dom";
-import TodoList from "../pages/TodoList";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { appRouters } from "../routers/Routers";
+import Header from "./Header";
+
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [dropdown, setDropdown] = useState(false);
-  console.log(dropdown);
+
+  const [dropdownSetting, setDropdownSetting] = useState(false);
   return (
     <BrowserRouter>
       <div>
@@ -70,13 +73,13 @@ const SideBar = () => {
                 {dropdown && (
                   <ul className="transform transition-all duration-300 ease-in-out ">
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="/products"
                         className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg  group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                       >
                         <FaCircle className="w-2 h-2 ms-2" />
                         {!collapsed && <div className="ms-5">Products</div>}
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a
@@ -162,8 +165,12 @@ const SideBar = () => {
         </div>
 
         <div className={`${collapsed ? "ml-24" : "ml-60"}`}>
+          <Header dropdown={dropdownSetting} setDropdown={setDropdownSetting} />
           <Routes>
-            <Route path="/todolist" element={<TodoList />} />
+            {/* <Route path="/todolist" element={<TodoList />} /> */}
+            {appRouters.map((r) => (
+              <Route key={r.path} path={r.path} element={r.element} />
+            ))}
           </Routes>
         </div>
       </div>
