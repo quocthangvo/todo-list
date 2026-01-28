@@ -22,7 +22,7 @@ const BreadCrumb = () => {
           {paths.map((_, i) => {
             const url = "/" + paths.slice(0, i + 1).join("/");
             const match = breadCrumbRouters.find((r) =>
-              url.match(new RegExp("^" + r.path.replace(":id", "[^/]+")))
+              url.match(new RegExp("^" + r.path.replace(":id", "[^/]+") + "$"))
             );
 
             return (

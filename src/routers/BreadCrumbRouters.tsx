@@ -4,7 +4,11 @@ export const breadCrumbRouters = [
     breadcrumb: "Todo List",
   },
   {
-    path: "/products",
+    path: "/e-commerce",
+    breadcrumb: "e-commerce",
+  },
+  {
+    path: "/e-commerce/products",
     breadcrumb: "Products",
   },
 ];

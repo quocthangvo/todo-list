@@ -74,7 +74,7 @@ const SideBar = () => {
                   <ul className="transform transition-all duration-300 ease-in-out ">
                     <li>
                       <Link
-                        to="/products"
+                        to="/e-commerce/products"
                         className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg  group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                       >
                         <FaCircle className="w-2 h-2 ms-2" />

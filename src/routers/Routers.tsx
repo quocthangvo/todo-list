@@ -8,7 +8,7 @@ export const appRouters = [
     // breadcrumb: "Todo List",
   },
   {
-    path: "/products",
+    path: "/e-commerce/products",
     element: <Products />,
   },
 ];
