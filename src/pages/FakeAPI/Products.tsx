@@ -8,12 +8,21 @@ import type { IProduct } from "../../utils/interface/Products/Product";
 
 const Products = () => {
   const [productList, setProductList] = useState<IProduct[]>([]);
+  const [refresh, setRefresh] = useState<number>(0);
+  const [page, setPage] = useState(1);
   return (
     <React.Fragment>
       <Card>
         <div className="items-center mx-auto p-4">
           <BreadCrumb />
-          <ProductSearch data={productList} setData={setProductList} />
+          <ProductSearch
+            data={productList}
+            setData={setProductList}
+            refresh={refresh}
+            setRefresh={setRefresh}
+            page={page}
+            setPage={setPage}
+          />
           <ProductTable header={PRODUCT_TABLE} data={productList} />
         </div>
       </Card>

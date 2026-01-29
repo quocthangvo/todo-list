@@ -41,7 +41,9 @@ const ProductTableBody = ({ header, data }: ProductTableBodyProps) => {
                   {item.availabilityStatus}
                 </span>
               </td>
-              <td className="p-4 w-60">{item.description}</td>
+              <td className="p-4 w-60 overflow-hidden text-ellipsis ">
+                {item.description}
+              </td>
             </tr>
           );
         })

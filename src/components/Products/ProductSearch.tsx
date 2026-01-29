@@ -10,7 +10,14 @@ type Category = {
   url: string;
 };
 
-const ProductSearch = ({ data, setData }: ProductSearchProps) => {
+const ProductSearch = ({
+  data,
+  setData,
+  page,
+  setPage,
+  refresh,
+  setRefresh,
+}: ProductSearchProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   // ACTION
@@ -18,13 +25,11 @@ const ProductSearch = ({ data, setData }: ProductSearchProps) => {
     initialValues: {
       title: "",
       category: "",
-      brand: "",
     },
-    onSubmit: async (values) => {
+    onSubmit: async () => {
       try {
-        const products = await fetchProduct(values);
-
-        setData(products);
+        setPage(1);
+        await fetchProductList(true); // true = search mới
       } catch (e) {
         toast.error("This didn't work.");
       }
@@ -34,39 +39,39 @@ const ProductSearch = ({ data, setData }: ProductSearchProps) => {
   // ACTION
 
   // FETCH
-  const fetchProduct = async (params: {
-    title?: string;
-    category?: string;
-    brand?: string;
-  }) => {
+  const fetchProductList = async (isNewSearch = false) => {
     try {
-      let url = "https://dummyjson.com/products";
+      let url = `https://dummyjson.com/products?limit=10&skip=${(page - 1) * 10}`;
 
-      // ưu tiên search theo title
-      if (params.title) {
-        url = `https://dummyjson.com/products/search?q=${params.title}`;
+      // search title
+      if (formik.values.title) {
+        url = `https://dummyjson.com/products/search?q=${formik.values.title}&limit=10&skip=${(page - 1) * 10}`;
       }
 
-      // nếu có category thì override
-      if (params.category) {
-        url = `https://dummyjson.com/products/category/${params.category}`;
+      // filter category
+      if (formik.values.category) {
+        url = `https://dummyjson.com/products/category/${formik.values.category}?limit=10&skip=${(page - 1) * 10}`;
       }
 
       const res = await axios.get(url);
 
-      let products = res.data.products || [];
+      const products = res.data.products || [];
 
-      return products;
-    } catch (e) {
-      toast.error("This didn't work.");
+      if (page === 1 || isNewSearch) {
+        setData(products);
+      } else {
+        setData((prev: any) => [...prev, ...products]);
+      }
+    } catch (error) {
+      toast.error("Fetch failed");
     }
   };
 
   //FETCH
 
   useEffect(() => {
-    fetchProduct({});
-  }, []);
+    fetchProductList();
+  }, [page, refresh]);
 
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
