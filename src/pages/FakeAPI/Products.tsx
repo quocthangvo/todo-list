@@ -33,6 +33,7 @@ const Products = () => {
             setCheckFunction={setCheckFunction}
             modal={openModal}
             setModal={setOpenModal}
+            getChooseRow={getChooseRow}
           />
 
           <ProductTable

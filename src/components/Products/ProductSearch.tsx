@@ -3,6 +3,7 @@ import type { ProductSearchProps } from "../../utils/props/ECommerce/Product";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 type Category = {
   slug: string;
@@ -21,6 +22,7 @@ const ProductSearch = ({
   setCheckFunction,
   modal,
   setModal,
+  getChooseRow,
 }: ProductSearchProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -46,6 +48,39 @@ const ProductSearch = ({
   const addProduct = () => {
     setCheckFunction("add");
     setModal(!modal);
+  };
+
+  const deleteProduct = async () => {
+    if (!getChooseRow?.id) {
+      toast.error("No data selected");
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#155DFC",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await fetch(`https://dummyjson.com/products/${getChooseRow.id}`, {
+        method: "DELETE",
+      });
+
+      setData((prev: any[]) =>
+        prev.filter((item) => item.id !== getChooseRow.id),
+      );
+      // setRefresh((oldKey: any) => oldKey + 1);
+      Swal.fire("Deleted!", "Product has been deleted.", "success");
+    } catch (error) {
+      toast.error("Delete failed");
+    }
   };
 
   // ACTION
@@ -149,9 +184,23 @@ const ProductSearch = ({
           <button
             type="button"
             onClick={addProduct}
-            className="w-full rounded-lg p-2 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-xl shadow-blue-500/50"
+            className="w-full rounded-lg py-2 px-4 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-xl shadow-blue-500/50"
           >
             Add
+          </button>
+          <button
+            type="button"
+            // onClick={editProduct}
+            className="w-full rounded-lg py-2 px-4 bg-yellow-600 text-white hover:bg-yellow-700 cursor-pointer shadow-xl shadow-yellow-500/50"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            onClick={deleteProduct}
+            className="w-full rounded-lg py-2 px-4 bg-red-600 text-white hover:bg-red-700 cursor-pointer shadow-xl shadow-red-500/50"
+          >
+            Delete
           </button>
         </div>
       </form>

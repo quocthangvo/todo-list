@@ -18,6 +18,8 @@ export type ProductSearchProps = {
   setCheckFunction: (item: string) => void;
   modal: boolean;
   setModal: (modal: any) => void;
+  getChooseRow: IProduct;
+
 };
 
 export type ProductTableProps = {
