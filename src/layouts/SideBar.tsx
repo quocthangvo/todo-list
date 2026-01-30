@@ -21,7 +21,7 @@ const SideBar = () => {
       <div>
         <div
           className={`fixed top-0 left-0 z-40 h-screen transition-all duration-300 sm:translate-x-0 
-            ${collapsed ? "w-24" : "w-60"}`}
+            ${collapsed ? "w-28" : "w-60"}`}
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 border-r-2 border-gray-200 shadow-lg">
             <div className="px-2 py-4 flex justify-between items-center border-b-2 border-gray-200">
@@ -164,7 +164,7 @@ const SideBar = () => {
           </div>
         </div>
 
-        <div className={`${collapsed ? "ml-24" : "ml-60"}`}>
+        <div className={`${collapsed ? "ml-28" : "ml-60"}`}>
           <Header dropdown={dropdownSetting} setDropdown={setDropdownSetting} />
           <Routes>
             {/* <Route path="/todolist" element={<TodoList />} /> */}

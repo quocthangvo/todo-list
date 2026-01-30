@@ -1,7 +1,12 @@
 import type { ProductTableBodyProps } from "../../../utils/props/ECommerce/Product";
 import Typography from "../../common/Typography";
-
-const ProductTableBody = ({ header, data }: ProductTableBodyProps) => {
+import "../../../css/product.css";
+const ProductTableBody = ({
+  header,
+  data,
+  activeRow,
+  onActiveRow,
+}: ProductTableBodyProps) => {
   return (
     <tbody>
       {data?.length === 0 ? (
@@ -20,9 +25,14 @@ const ProductTableBody = ({ header, data }: ProductTableBodyProps) => {
               key={index}
               className={`${
                 index % 2 === 0
-                  ? "bg-slate-50 dark:bg-blue-400 dark:text-white"
-                  : "bg-white dark:bg-[#202940] dark:text-white"
+                  ? activeRow === index
+                    ? "bg-blue-400 text-white"
+                    : "bg-white dark:bg-[#202940] dark:text-white"
+                  : activeRow === index
+                  ? "bg-blue-400 text-white"
+                  : "bg-slate-50 dark:bg-[#202940] dark:text-white"
               }`}
+              onClick={() => onActiveRow(index, item)}
             >
               <td className="p-4">{item.title}</td>
               <td className="p-4">{item.category}</td>
@@ -41,8 +51,20 @@ const ProductTableBody = ({ header, data }: ProductTableBodyProps) => {
                   {item.availabilityStatus}
                 </span>
               </td>
-              <td className="p-4 w-60 overflow-hidden text-ellipsis ">
-                {item.description}
+              <td className="p-4 w-60">
+                <div className="relative group ">
+                  <div className="line-clamp-2 break-words cursor-pointer">
+                    {item.description}
+                  </div>
+
+                  <div
+                    className="absolute left-0 top-full mt-1 hidden group-hover:block
+                    bg-gray-700 text-white text-xs p-2 rounded
+                    shadow-lg max-w-sm z-50 whitespace-normal"
+                  >
+                    {item.description}
+                  </div>
+                </div>
               </td>
             </tr>
           );

@@ -17,6 +17,10 @@ const ProductSearch = ({
   setPage,
   refresh,
   setRefresh,
+  currentPage,
+  setCheckFunction,
+  modal,
+  setModal,
 }: ProductSearchProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -28,7 +32,10 @@ const ProductSearch = ({
     },
     onSubmit: async () => {
       try {
-        setPage(1);
+        setPage((prev: any) => ({
+          ...prev,
+          pages: 1,
+        }));
         await fetchProductList(true); // true = search mới
       } catch (e) {
         toast.error("This didn't work.");
@@ -36,30 +43,46 @@ const ProductSearch = ({
     },
   });
 
+  const addProduct = () => {
+    setCheckFunction("add");
+    setModal(!modal);
+  };
+
   // ACTION
 
   // FETCH
   const fetchProductList = async (isNewSearch = false) => {
     try {
-      let url = `https://dummyjson.com/products?limit=10&skip=${(page - 1) * 10}`;
+      const { pages, pageSize } = page;
+      const skip = (pages - 1) * pageSize;
 
-      // search title
+      let url = `https://dummyjson.com/products?limit=${pageSize}&skip=${skip}`;
+
+      // Search theo title
       if (formik.values.title) {
-        url = `https://dummyjson.com/products/search?q=${formik.values.title}&limit=10&skip=${(page - 1) * 10}`;
+        url = `https://dummyjson.com/products/search?q=${formik.values.title}&limit=${pageSize}&skip=${skip}`;
       }
 
-      // filter category
+      // Filter category
       if (formik.values.category) {
-        url = `https://dummyjson.com/products/category/${formik.values.category}?limit=10&skip=${(page - 1) * 10}`;
+        url = `https://dummyjson.com/products/category/${formik.values.category}?limit=${pageSize}&skip=${skip}`;
       }
 
       const res = await axios.get(url);
-
       const products = res.data.products || [];
 
-      if (page === 1 || isNewSearch) {
+      // cập nhật total
+      setPage((prev: any) => ({
+        ...prev,
+        total: res.data.total,
+      }));
+
+      // Trang đầu hoặc search mới → replace
+      if (pages === 1 || isNewSearch) {
         setData(products);
-      } else {
+      }
+      // Load thêm → append
+      else {
         setData((prev: any) => [...prev, ...products]);
       }
     } catch (error) {
@@ -71,7 +94,7 @@ const ProductSearch = ({
 
   useEffect(() => {
     fetchProductList();
-  }, [page, refresh]);
+  }, [page.pages, currentPage, page.pageSize, refresh]);
 
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
@@ -123,7 +146,11 @@ const ProductSearch = ({
           >
             Search
           </button>
-          <button className="w-full rounded-lg p-2 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-xl shadow-blue-500/50">
+          <button
+            type="button"
+            onClick={addProduct}
+            className="w-full rounded-lg p-2 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-xl shadow-blue-500/50"
+          >
             Add
           </button>
         </div>
