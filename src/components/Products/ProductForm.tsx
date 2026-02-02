@@ -32,15 +32,19 @@ const ProductForm = ({
   };
   let validationSchema = Yup.object().shape(condition);
   // ACTION
+
   const formik = useFormik({
     initialValues: {
+      id: checkFunction === "edit" ? data.id : "",
       Title: checkFunction === "edit" ? data.title : "",
       Category: checkFunction === "edit" ? data.category : "",
       Brand: checkFunction === "edit" ? data.brand : "",
       Price: checkFunction === "edit" ? data.price : "",
+      Rating: checkFunction === "edit" ? data.rating : "",
       Sku: checkFunction === "edit" ? data.sku : "",
       Availability_Status:
         checkFunction === "edit" ? data.availabilityStatus : "",
+      Description: checkFunction === "edit" ? data.description : "",
     },
     validationSchema,
     onSubmit: async (data) => {
@@ -72,6 +76,26 @@ const ProductForm = ({
           // Close modal nếu có
           setOpenModal(!openModal);
         } else {
+          const res = await fetch(`https://dummyjson.com/products/${data.id}`, {
+            method: "PUT", // hoặc PATCH
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: data.Title,
+              category: data.Category,
+              brand: data.Brand,
+              price: Number(data.Price),
+              sku: data.Sku,
+              availabilityStatus: data.Availability_Status,
+            }),
+          });
+          const update = await res.json();
+          if (update) {
+            toast.success("Update successful");
+            // setRefreshKey((oldKey: any) => oldKey + 1);
+            setOpenModal(!openModal);
+          }
         }
       } catch (error: any) {
         toast.error("error");
@@ -182,6 +206,7 @@ const ProductForm = ({
                 <input
                   type="text"
                   name="Rating"
+                  value={formik.values.Rating}
                   onChange={formik.handleChange}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -225,6 +250,7 @@ const ProductForm = ({
                 <input
                   type="text"
                   name="Description"
+                  value={formik.values.Description}
                   onChange={formik.handleChange}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />

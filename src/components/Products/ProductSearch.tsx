@@ -74,13 +74,49 @@ const ProductSearch = ({
       });
 
       setData((prev: any[]) =>
-        prev.filter((item) => item.id !== getChooseRow.id),
+        prev.filter((item) => item.id !== getChooseRow.id)
       );
       // setRefresh((oldKey: any) => oldKey + 1);
       Swal.fire("Deleted!", "Product has been deleted.", "success");
     } catch (error) {
       toast.error("Delete failed");
     }
+  };
+
+  const editProduct = async () => {
+    if (getChooseRow?.id) {
+      setCheckFunction("edit");
+      setModal(!modal);
+    } else {
+      toast.error("Please choose a data in table");
+    }
+
+    // try {
+    //   const res = await fetch(`https://dummyjson.com/products/${data.id}`, {
+    //     method: "PUT", // hoặc PATCH
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       title: formik.values.title,
+    //       category: formik.values.category,
+    //       brand: formik.values.brand,
+    //       price: Number(formik.values.price),
+    //       sku: formik.values.,
+    //       availabilityStatus: formik.values.,
+    //     }),
+    //   });
+    //   const updated = await res.json();
+    //   setData((prev: any) =>
+    //     prev.map((item) =>
+    //       item.id === updated.id ? { ...item, ...updated } : item
+    //     )
+    //   );
+    //   toast.success("Product updated!");
+    //   setModal(!modal);
+    // } catch (err) {
+    //   toast.error("Update failed");
+    // }
   };
 
   // ACTION
@@ -190,8 +226,8 @@ const ProductSearch = ({
           </button>
           <button
             type="button"
-            // onClick={editProduct}
-            className="w-full rounded-lg py-2 px-4 bg-yellow-600 text-white hover:bg-yellow-700 cursor-pointer shadow-xl shadow-yellow-500/50"
+            onClick={editProduct}
+            className="w-full rounded-lg py-2 px-4 bg-yellow-500 text-white hover:bg-yellow-600 cursor-pointer shadow-xl shadow-yellow-500/50"
           >
             Edit
           </button>
